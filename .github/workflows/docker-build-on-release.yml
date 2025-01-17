@@ -30,7 +30,7 @@ jobs:
         run: echo "LOWERCASE_REPOSITORY=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Echo Repository Lowercase
-        run: ${{ env.LOWERCASE_REPOSITORY }}
+        run: echo $GITHUB_ENV
 
       # 4. Build and Push Docker Image
       - name: Build and Push Docker Image
