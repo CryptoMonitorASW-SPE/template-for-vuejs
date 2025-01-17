@@ -34,10 +34,14 @@ node {
     nodeProjectDir.set(file(project.projectDir))
 }
 
-// If you want to run "npm run dev" via Gradle
-tasks.register<com.github.gradle.node.npm.task.NpmTask>("runDev") {
+tasks.register<com.github.gradle.node.npm.task.NpmTask>("runBackend") {
     dependsOn("npm_install")
     args.set(listOf("run", "dev"))
+}
+
+tasks.register<com.github.gradle.node.npm.task.NpmTask>("runFrontend") {
+    dependsOn("npm_install")
+    args.set(listOf("run", "serve"))
 }
 
 tasks.register("printVersion") {
