@@ -1,7 +1,7 @@
 # ================================================
 # Stage 1: Build the application
 # ================================================
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -23,7 +23,7 @@ COPY app/ ./
 # ================================================
 # Stage 2: Create the final image
 # ================================================
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /usr/src/app
