@@ -1,7 +1,10 @@
 import io.github.andreabrighi.gradle.gitsemver.conventionalcommit.ConventionalCommit
+import com.github.gradle.node.npm.task.NpmTask
+import com.github.gradle.node.task.NodeTask
+
 
 plugins {
-    id("org.danilopianini.git-sensitive-semantic-versioning") version "0.1.0"
+    id("org.danilopianini.git-sensitive-semantic-versioning") version "3.1.7"
     // Apply the Node.js plugin
     id("com.github.node-gradle.node") version "7.1.0"
 }
@@ -34,12 +37,12 @@ node {
     nodeProjectDir.set(file(project.projectDir))
 }
 
-tasks.register<com.github.gradle.node.npm.task.NpmTask>("runBackend") {
+tasks.register<NpmTask>("runBackend") {
     dependsOn("npm_install")
     args.set(listOf("run", "dev"))
 }
 
-tasks.register<com.github.gradle.node.npm.task.NpmTask>("runFrontend") {
+tasks.register<NpmTask>("runFrontend") {
     dependsOn("npm_install")
     args.set(listOf("run", "serve"))
 }
