@@ -26,6 +26,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Convert repository name to lowercase
+        run: echo "LOWERCASE_REPOSITORY=$(echo \"${{ github.repository }}\" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       # 4. Build and Push Docker Image
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
@@ -33,12 +36,12 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
+            ghcr.io/${{ env.LOWERCASE_REPOSITORY }}:latest
+            ghcr.io/${{ env.LOWERCASE_REPOSITORY }}:${{ github.event.release.tag_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
 
       # 5. (Optional) Verify Docker Image
       - name: Verify Docker Image
-        run: ghcr.io/${{ github.repository }}:latest
+        run: ghcr.io/${{ env.LOWERCASE_REPOSITORY }}:latest
