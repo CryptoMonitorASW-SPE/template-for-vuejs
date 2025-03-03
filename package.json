@@ -23,7 +23,7 @@
     "lint:fix": "eslint \"./app/src/**/*.{js,vue}\" --fix"
   },
   "engines": {
-    "node": "22.13.1"
+    "node": "22.14.0"
   },
   "dependencies": {
     "@semantic-release/git": "^10.0.1"
