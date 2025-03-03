@@ -1,38 +1,32 @@
-# ================================================
-# Stage 1: Build the application
-# ================================================
+# Stage 1: Build the Vue.js application
 FROM node:22.13-alpine AS build
 
 # Set working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy package files from the app folder
+# Copy package.json and package-lock.json
 COPY app/package*.json ./
-# (Optional) If you run gradle tasks inside Docker, you could copy build.gradle.kts too
-# COPY app/build.gradle.kts ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code
-COPY app/ ./
+COPY app/ .
 
-# (Optional) If you had a build step for a front-end, you might do: 
-# RUN npm run build
+# Build the application
+RUN npm run build
 
-# ================================================
-# Stage 2: Create the final image
-# ================================================
-FROM node:22.13-alpine AS build-final
+# Stage 2: Serve the application with Nginx
+FROM nginx:stable AS prod-stage
 
-# Set working directory
-WORKDIR /usr/src/app
+# Copy the built files from the previous stage
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy files from the build stage
-COPY --from=build /usr/src/app /usr/src/app
+# Copy nginx configuration directly to the proper location
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Expose the backend port
-EXPOSE 3000
+# Expose port 80
+EXPOSE 80
 
-# Start the application
-CMD ["node", "index.js"]
+# Run nginx directly
+CMD ["nginx", "-g", "daemon off;"]
